@@ -43,6 +43,11 @@ app.get("/clientes/:id", (req, res) => {
   const sql = "select * from clientes where id = ?";
   conexao.query(sql, [req.params.id], (err, data) => {
     if (err) throw err;
+    // verifica se o cliente foi encontrado
+    if (data.length === 0) {
+      res.status(404).json({ message: "Cliente não encontrado" });
+      return;
+    }
     res.json(data);
   });
 });
