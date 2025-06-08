@@ -15,6 +15,8 @@ const conexao = mysql.createConnection({
   timezone: "-03:00", // Define o fuso horário
 });
 
+
+
 conexao.connect((err) => {
   if (err) {
     console.error("Erro ao conectar no MySQL:", err);
