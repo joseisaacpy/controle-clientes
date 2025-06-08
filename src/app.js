@@ -12,8 +12,6 @@ import conexao from "./data/conexao.js";
 app.use(express.json());
 // para aceitar dados do form
 app.use(express.urlencoded({ extended: true }));
-// para servir arquivos estáticos
-app.use(express.static("../public"));
 
 // importa o dirname e o fileURLToPath
 import { fileURLToPath } from "url";
@@ -21,12 +19,16 @@ import { dirname } from "path";
 // define o __dirname numa variável
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
+// para servir arquivos estáticos
+app.use(express.static(path.join(__dirname, "../public")));
 // rotas
 // Rota principal
-app.get("/", (req, res) => {
-  const indexPath = path.join(__dirname + "/../public/index.html");
-  res.sendFile(indexPath);
+app.get("/", (req, res) => {});
+
+// rota para formulário
+app.get("/clientes/novo", (req, res) => {
+  const formPath = path.join(__dirname + "/../public/views/form.html");
+  res.sendFile(formPath);
 });
 
 // rota para listar os clientes
