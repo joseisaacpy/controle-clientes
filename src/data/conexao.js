@@ -11,7 +11,7 @@ const conexao = mysql.createConnection({
   user: process.env.MYSQLUSER,
   password: process.env.MYSQLPASSWORD,
   database: process.env.MYSQLDATABASE,
-  port: process.env.MYSQlPORT,
+  port: process.env.MYSQLPORT,
   timezone: "-03:00", // Define o fuso horário
 });
 
