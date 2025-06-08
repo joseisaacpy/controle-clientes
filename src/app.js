@@ -31,8 +31,16 @@ app.get("/clientes/novo", (req, res) => {
   res.sendFile(formPath);
 });
 
-// rota para listar os clientes
+// rota para ver clientes cadastrados
 app.get("/clientes", (req, res) => {
+  const clientesCadastradosPath = path.join(
+    __dirname + "/../public/views/clientes-cadastrados.html"
+  );
+  res.sendFile(clientesCadastradosPath);
+});
+
+// rota para listar os clientes
+app.get("/api/clientes", (req, res) => {
   const sql = "select * from clientes";
   conexao.query(sql, (err, data) => {
     if (err) throw err;
@@ -41,7 +49,7 @@ app.get("/clientes", (req, res) => {
 });
 
 // rota para pegar um cliente pelo id
-app.get("/clientes/:id", (req, res) => {
+app.get("/api/clientes/:id", (req, res) => {
   const sql = "select * from clientes where id = ?";
   conexao.query(sql, [req.params.id], (err, data) => {
     if (err) throw err;
@@ -55,7 +63,7 @@ app.get("/clientes/:id", (req, res) => {
 });
 
 // rota para cadastrar um cliente
-app.post("/clientes", (req, res) => {
+app.post("/api/clientes", (req, res) => {
   const cliente = req.body;
   const sql = "insert into clientes set ?";
   conexao.query(sql, [cliente], (err, data) => {
