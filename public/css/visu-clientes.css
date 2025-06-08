@@ -1,0 +1,33 @@
+@import url(./reset.css);
+@import url(./header.css);
+
+ul {
+  list-style-type: none;
+  gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  padding: 1rem;
+}
+
+.item-cliente {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+.item-cliente button {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: none;
+  background-color: #3498db;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.item-cliente button:hover {
+  background-color: #2980b9;
+}

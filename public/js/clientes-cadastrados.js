@@ -15,6 +15,7 @@ async function listarClientes() {
     const li = document.createElement("li");
 
     const itemCliente = document.createElement("div");
+    itemCliente.classList.add("item-cliente");
 
     itemCliente.innerHTML = `
     <p>Nome: ${item.nome}</p>
@@ -22,7 +23,8 @@ async function listarClientes() {
     <p>Email: ${item.email}</p>
     <p>Telefone: ${item.telefone}</p>
     <p>Criação: ${item.criado_em}</p>
-    
+    <button>Editar</button>
+    <button>Excluir</button>
     `;
     li.appendChild(itemCliente);
 

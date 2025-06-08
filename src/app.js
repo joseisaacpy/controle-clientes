@@ -62,6 +62,8 @@ app.get("/api/clientes/:id", (req, res) => {
   });
 });
 
+// rota para pegar um cliente pelo cpf
+
 // rota para cadastrar um cliente
 app.post("/api/clientes", (req, res) => {
   const cliente = req.body;

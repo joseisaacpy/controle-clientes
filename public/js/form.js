@@ -1,6 +1,8 @@
 // Formulário de cadastro
 const form = document.querySelector("form");
 
+// funcao pra saber se o cpf é duplicado
+
 // Evento de envio do formulário
 form.addEventListener("submit", async (e) => {
   // Evita o comportamento padrão do formulário
@@ -47,7 +49,7 @@ form.addEventListener("submit", async (e) => {
 
   // Se passou todas validações, envia para o backend
   try {
-    const response = await fetch("/clientes", {
+    const response = await fetch("/api/clientes", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
