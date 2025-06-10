@@ -10,9 +10,6 @@ import conexao from "./data/conexao.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-console.log("Usuário esperado:", process.env.ADM_USER);
-console.log("Senha esperada:", process.env.ADM_PASSWORD);
-
 // middlewares
 // para aceitar json
 app.use(express.json());
@@ -52,7 +49,7 @@ app.get("/login", (req, res) => {
 });
 
 // rota para admin
-app.use("/admin", (req, res) => {
+app.get("/admin", (req, res) => {
   if (!req.session.usuarioAutenticado) {
     return res.redirect("/login");
   }
@@ -71,15 +68,13 @@ app.post("/login", (req, res) => {
       __dirname + "/../public/views/clientes-cadastrados.html"
     );
     res.sendFile(clientesCadastradosPath);
+  } else {
+    res
+      .status(401)
+      .send(
+        "Usuário ou senha inválidos. <a href='/login'>Tentar novamente</a>"
+      );
   }
-  res
-    .status(401)
-    .send("Usuário ou senha inválidos. <a href='/login'>Tentar novamente</a>");
-});
-
-// Tratamento de rota não encontrada
-app.use((req, res) => {
-  res.status(404).send("Página não encontrada");
 });
 
 // rota para formulário
@@ -122,7 +117,6 @@ app.get("/api/clientes/:id", (req, res) => {
 // funcao para pegar um cliente pelo cpf
 function buscarPeloCpf(cpf) {
   const sql = "select * from clientes where cpf = ?";
-  const conexao = require("./data/conexao.js");
   conexao.query(sql, [cpf], (err, data) => {
     if (err) throw err;
     // verifica se o cliente foi encontrado
@@ -142,6 +136,11 @@ app.post("/api/clientes", (req, res) => {
     if (err) throw err;
     res.json(data);
   });
+});
+
+// Tratamento de rota não encontrada
+app.use((req, res) => {
+  res.status(404).send("<h1>Página não encontrada</h1>");
 });
 
 // exporta o app

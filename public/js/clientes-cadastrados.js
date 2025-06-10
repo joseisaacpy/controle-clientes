@@ -17,12 +17,16 @@ async function listarClientes() {
     const itemCliente = document.createElement("div");
     itemCliente.classList.add("item-cliente");
 
+    // Formatar a data
+    const dataFormatada = new Date(item.criado_em).toLocaleDateString("pt-BR");
+
     itemCliente.innerHTML = `
     <p>Nome: ${item.nome}</p>
     <p>CPF: ${item.cpf}</p>
     <p>Email: ${item.email}</p>
     <p>Telefone: ${item.telefone}</p>
-    <p>Criação: ${item.criado_em}</p>
+    <p>Criação: ${dataFormatada}</p>
+
     <button>Editar</button>
     <button>Excluir</button>
     `;
