@@ -1,7 +1,28 @@
+// funcionalidade de mascara para os inputs cpf e telefone
+const cpfInput = document.getElementById("cpf");
+cpfInput.addEventListener("input", function (e) {
+  let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não for número
+  if (value.length > 3 && value.length <= 6)
+    value = value.replace(/(\d{3})(\d+)/, "$1.$2");
+  else if (value.length > 6 && value.length <= 9)
+    value = value.replace(/(\d{3})(\d{3})(\d+)/, "$1.$2.$3");
+  else if (value.length > 9)
+    value = value.replace(/(\d{3})(\d{3})(\d{3})(\d+)/, "$1.$2.$3-$4");
+  e.target.value = value;
+});
+
+const telInput = document.getElementById("telefone");
+telInput.addEventListener("input", function (e) {
+  let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não for número
+  if (value.length > 2 && value.length <= 7)
+    value = value.replace(/(\d{2})(\d+)/, "($1) $2");
+  else if (value.length > 7)
+    value = value.replace(/(\d{2})(\d{5})(\d+)/, "($1) $2-$3");
+  e.target.value = value;
+});
+
 // Formulário de cadastro
 const form = document.querySelector("form");
-
-// funcao pra saber se o cpf é duplicado
 
 // Evento de envio do formulário
 form.addEventListener("submit", async (e) => {
