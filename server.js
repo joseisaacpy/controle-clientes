@@ -13,5 +13,5 @@ const port = process.env.PORT || 3000;
 
 // inicia o servidor
 app.listen(port, "0.0.0.0", () => {
-  console.log(`servidor rodando em http://localhost:${port}`);
+  console.log(`Servidor rodando em http://localhost:${port}`);
 });

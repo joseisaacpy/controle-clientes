@@ -4,4 +4,26 @@ header {
   justify-content: center;
   background-color: #ccc;
   padding: 1rem;
+  flex-direction: column;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  background-color: #ccc;
+}
+nav a {
+  padding: 0.5rem;
+  text-align: center;
+  border-radius: 4px;
+  border: none;
+  background-color: #3498db;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+nav a:hover {
+  background-color: #2980b9;
 }

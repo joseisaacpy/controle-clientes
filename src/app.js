@@ -1,30 +1,21 @@
-// import express
+// importações:
 import express from "express";
-// importa o path
 import path from "path";
-// instancia o express
-const app = express();
-// importa o arquivo de conexão
 import conexao from "./data/conexao.js";
-// importa o dotenv
+import session from "express-session";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 import dotenv from "dotenv";
 dotenv.config();
 
-// middlewares:
-// para aceitar json
-app.use(express.json());
-// para aceitar dados do form
-app.use(express.urlencoded({ extended: true }));
-
-// importa o dirname e o fileURLToPath
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-// define o __dirname numa variável
+// constantes:
+const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// importa o express-session
-import session from "express-session";
+// middlewares:
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // caminho do arquivos:
 // listar clientes
@@ -47,20 +38,10 @@ app.use(
     },
   })
 );
-
 // para servir arquivos estáticos
 app.use(express.static(path.join(__dirname, "../public")));
 
 // rotas:
-// rota principal
-app.get("/", (req, res) => {
-  if (req.session.usuarioAutenticado) {
-    res.redirect("/admin");
-  } else {
-    res.redirect("/login");
-  }
-});
-
 // rota para login get
 app.get("/login", (req, res) => {
   res.sendFile(loginPath);
@@ -79,13 +60,23 @@ app.post("/login", (req, res) => {
   const { usuario, senha } = req.body;
   if (usuario === process.env.ADM_USER && senha === process.env.ADM_PASSWORD) {
     req.session.usuarioAutenticado = true;
-    res.redirect("/admin"); // Redireciona ao invés de carregar HTML direto
+    res.redirect("/admin");
   } else {
     res
       .status(401)
       .send(
         "Usuário ou senha inválidos. <a href='/login'>Tentar novamente</a>"
       );
+  }
+});
+
+// rota principal
+app.get("/", (req, res) => {
+  console.log("Rota / acessada"); // Teste simples
+  if (req.session.usuarioAutenticado) {
+    res.redirect("/admin");
+  } else {
+    res.redirect("/login");
   }
 });
 
@@ -123,17 +114,6 @@ app.get("/api/clientes/:id", (req, res) => {
     res.json(data);
   });
 });
-
-// funcao para pegar um cliente pelo cpf
-function buscarPeloCpf(cpf) {
-  return new Promise((resolve, reject) => {
-    const sql = "SELECT * FROM clientes WHERE cpf = ?";
-    conexao.query(sql, [cpf], (err, data) => {
-      if (err) return reject(err);
-      resolve(data);
-    });
-  });
-}
 
 // rota para cadastrar um cliente
 app.post("/api/clientes", (req, res) => {
@@ -214,5 +194,5 @@ app.use((req, res) => {
   res.status(404).send("<h1>Página não encontrada</h1>");
 });
 
-// exporta o app
+// exportação do app
 export default app;

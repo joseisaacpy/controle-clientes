@@ -3,7 +3,6 @@
 
 /* em coluna, para mostra o titulo e a qtde de clientes no banco */
 header {
-  flex-direction: column;
   text-align: center;
 }
 
