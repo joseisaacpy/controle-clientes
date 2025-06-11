@@ -1,4 +1,5 @@
 const ul = document.querySelector("ul");
+const spanQtdeClientes = document.getElementById("qtde-clientes");
 
 async function listarClientes() {
   const request = await fetch("api/clientes");
@@ -11,6 +12,8 @@ async function listarClientes() {
     ul.appendChild(li);
     return;
   }
+
+  spanQtdeClientes.textContent = `Quantidade de Clientes: ${data.length}`;
 
   data.forEach((item) => {
     const li = document.createElement("li");

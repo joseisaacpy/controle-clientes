@@ -1,6 +1,11 @@
 @import url(./reset.css);
 @import url(./header.css);
 
+/* em coluna, para mostra o titulo e a qtde de clientes no banco */
+header {
+  flex-direction: column;
+}
+
 ul {
   list-style-type: none;
   gap: 1rem;
