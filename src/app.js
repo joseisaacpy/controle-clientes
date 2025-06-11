@@ -138,6 +138,32 @@ app.post("/api/clientes", (req, res) => {
   });
 });
 
+// rota para deletar um cliente
+app.delete("/api/clientes/:id", (req, res) => {
+  const sql = "DELETE FROM clientes WHERE id = ?";
+
+  conexao.query(sql, [req.params.id], (err, data) => {
+    if (err) {
+      return res.status(500).json({
+        success: false,
+        message: "Erro ao excluir cliente",
+      });
+    }
+
+    if (data.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Cliente não encontrado",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Cliente excluído com sucesso",
+    });
+  });
+});
+
 // Tratamento de rota não encontrada
 app.use((req, res) => {
   res.status(404).send("<h1>Página não encontrada</h1>");
