@@ -94,7 +94,6 @@ async function excluirCliente(e) {
       }`;
 
       listarClientes();
-      listarClientes();
     } else {
       alert("Erro ao excluir o cliente");
       console.log("Erro ao excluir o cliente:", result.error);
