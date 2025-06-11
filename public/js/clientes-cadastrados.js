@@ -87,6 +87,13 @@ async function excluirCliente(e) {
     const result = await response.json();
     if (response.ok && result.success) {
       alert(`O cliente ${clienteNome} foi excluido com sucesso!`);
+      // ✅ Atualizar contador antes de recarregar
+      const clientesAtuais = document.querySelectorAll(".item-cliente").length;
+      spanQtdeClientes.textContent = `Quantidade de Clientes: ${
+        clientesAtuais - 1
+      }`;
+
+      listarClientes();
       listarClientes();
     } else {
       alert("Erro ao excluir o cliente");
