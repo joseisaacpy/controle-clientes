@@ -117,7 +117,7 @@ app.get("/api/clientes/:id", (req, res) => {
 
 // rota para cadastrar um cliente
 app.post("/api/clientes", (req, res) => {
-  const { nome, cpf, email, telefone } = req.body;
+  const { nome, cpf, email, telefone, produto_alugado } = req.body;
 
   // Verifica campos obrigatórios
   if (!nome || !cpf || !telefone) {
@@ -151,7 +151,7 @@ app.post("/api/clientes", (req, res) => {
   }
 
   // Se tudo ok, insere no banco
-  const cliente = { nome, cpf, email, telefone };
+  const cliente = { nome, cpf, email, telefone, produto_alugado };
   const sql = "INSERT INTO clientes SET ?";
   conexao.query(sql, [cliente], (err, data) => {
     if (err) {

@@ -33,6 +33,7 @@ form.addEventListener("submit", async (e) => {
   const cpf = e.target.cpf.value.trim();
   const email = e.target.email.value.trim();
   const telefone = e.target.telefone.value.trim();
+  const produto_alugado = e.target.produtos.value.trim();
 
   // Função para mostrar erro (você pode adaptar para mostrar no HTML)
   function mostrarErro(msg) {
@@ -75,7 +76,7 @@ form.addEventListener("submit", async (e) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ nome, cpf, email, telefone }),
+      body: JSON.stringify({ nome, cpf, email, telefone, produto_alugado }),
     });
 
     if (response.ok) {
