@@ -3,6 +3,7 @@ import express from "express";
 import path from "path";
 import conexao from "./data/conexao.js";
 import session from "express-session";
+import cors from "cors";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import dotenv from "dotenv";
@@ -16,6 +17,7 @@ const __dirname = dirname(__filename);
 // middlewares:
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 // caminho do arquivos:
 // listar clientes
@@ -72,7 +74,6 @@ app.post("/login", (req, res) => {
 
 // rota principal
 app.get("/", (req, res) => {
-  console.log("Rota / acessada"); // Teste simples
   if (req.session.usuarioAutenticado) {
     res.redirect("/admin");
   } else {
