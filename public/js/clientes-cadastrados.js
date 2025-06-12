@@ -30,6 +30,7 @@ async function listarClientes() {
     <p>Email: ${item.email}</p>
     <p>Telefone: ${item.telefone}</p>
     <p>Criação: ${dataFormatada}</p>
+    <p>Último produto alugado: ${item.produto_alugado}</p>
 
     <button class="btn-editar" data-id="${item.id}">Editar</button>
     <button class="btn-excluir" data-id="${item.id}" data-nome="${item.nome}">Excluir</button>

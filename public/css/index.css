@@ -44,7 +44,9 @@ label {
 /* Estilo dos campos de entrada */
 input[type="text"],
 input[type="email"],
-input[type="tel"] {
+input[type="tel"],
+select {
+  width: 100%;
   padding: 0.75rem;
   border: 1px solid #ccc;
   border-radius: 4px;
