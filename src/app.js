@@ -103,16 +103,25 @@ app.get("/api/clientes", (req, res) => {
 
 // rota para pegar um cliente pelo id
 app.get("/api/clientes/:id", (req, res) => {
-  const sql = "select * from clientes where id = ?";
-  conexao.query(sql, [req.params.id], (err, data) => {
-    if (err)
+  const id = parseInt(req.params.id, 10); // Converte o ID para número inteiro
+
+  // Verifica se o ID é um número válido
+  if (isNaN(id)) {
+    return res.status(400).json({ message: "ID inválido" });
+  }
+
+  const sql = "SELECT * FROM clientes WHERE id = ?";
+  conexao.query(sql, [id], (err, data) => {
+    if (err) {
       return res.status(500).json({ message: "Erro no servidor", error: err });
-    // verifica se o cliente foi encontrado
-    if (data.length === 0) {
-      res.status(404).json({ message: "Cliente não encontrado" });
-      return;
     }
-    res.json(data);
+
+    // Verifica se o cliente foi encontrado
+    if (data.length === 0) {
+      return res.status(404).json({ message: "Cliente não encontrado" });
+    }
+
+    res.json(data[0]); // Retorna somente o objeto do cliente, e não um array
   });
 });
 
