@@ -38,6 +38,17 @@ nav a:hover {
   }
 }
 
+/* input de pesquisa */
+#pesquisa {
+  width: 100%;
+  font-size: 1rem;
+  padding: 0.6rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 ul {
   list-style-type: none;
   gap: 1rem;
