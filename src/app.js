@@ -2,7 +2,7 @@
 import mongoose from "mongoose";
 import express from "express";
 import path from "path";
-import clientes from "..data/clientes.js";
+import clientes from "../data/clientes.js";
 import session from "express-session";
 import cors from "cors";
 import { fileURLToPath } from "url";
