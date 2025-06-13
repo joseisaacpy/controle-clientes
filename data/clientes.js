@@ -30,6 +30,6 @@ const clienteSchema = new mongoose.Schema({
   },
 });
 
-const Cliente = mongoose.model("Clientes", clienteSchema);
+const Cliente = mongoose.model("Cliente", clienteSchema);
 
 export default Cliente;

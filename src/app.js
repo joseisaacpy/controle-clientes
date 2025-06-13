@@ -117,27 +117,18 @@ app.get("/api/clientes", async (req, res) => {
 });
 
 // rota para pegar um cliente pelo id
-app.get("/api/clientes/:id", (req, res) => {
-  const id = parseInt(req.params.id, 10); // Converte o ID para número inteiro
-
-  // Verifica se o ID é um número válido
-  if (isNaN(id)) {
-    return res.status(400).json({ message: "ID inválido" });
-  }
-
-  const sql = "SELECT * FROM clientes WHERE id = ?";
-  conexao.query(sql, [id], (err, data) => {
-    if (err) {
-      return res.status(500).json({ message: "Erro no servidor", error: err });
-    }
-
-    // Verifica se o cliente foi encontrado
-    if (data.length === 0) {
+app.get("/api/clientes/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const cliente = await clientes.findById(id);
+    if (!cliente) {
       return res.status(404).json({ message: "Cliente não encontrado" });
     }
-
-    res.json(data[0]); // Retorna somente o objeto do cliente, e não um array
-  });
+    res.json(cliente);
+  } catch (error) {
+    console.error("Erro ao buscar cliente:", error);
+    res.status(500).json({ message: "Erro ao buscar cliente", error });
+  }
 });
 
 // rota para cadastrar um cliente
