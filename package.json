@@ -8,19 +8,24 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joseisaacpy/controle-clientes.git"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joseisaacpy/controle-clientes/issues"
+  },
+  "homepage": "https://github.com/joseisaacpy/controle-clientes#readme",
   "description": "",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
-    "mysql": "^2.18.1",
-    "mysql2": "^3.14.1"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.10"
+    "mongoose": "^8.15.2",
+    "path": "^0.12.7"
   }
 }

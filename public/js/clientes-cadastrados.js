@@ -33,7 +33,9 @@ function renderizarClientes(clientes) {
     const itemCliente = document.createElement("div");
     itemCliente.classList.add("item-cliente");
 
-    const dataFormatada = new Date(item.criado_em).toLocaleDateString("pt-BR");
+    const dataFormatada = new Date(item.data_criacao).toLocaleDateString(
+      "pt-BR"
+    );
 
     itemCliente.innerHTML = `
       <p>Nome: ${item.nome}</p>

@@ -1,13 +1,27 @@
 // importações:
+import mongoose from "mongoose";
 import express from "express";
 import path from "path";
-import conexao from "./data/conexao.js";
+import clientes from "..data/clientes.js";
 import session from "express-session";
 import cors from "cors";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import dotenv from "dotenv";
 dotenv.config();
+
+// conexão com o MongoDB
+const conexaoMongo = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("Conectado ao MongoDB");
+  } catch (error) {
+    console.error("Erro ao conectar ao MongoDB:", error);
+  }
+};
+
+// chama a função de conexão com o MongoDB
+conexaoMongo();
 
 // constantes:
 const app = express();
@@ -92,13 +106,14 @@ app.get("/clientes", (req, res) => {
 });
 
 // rota para listar os clientes
-app.get("/api/clientes", (req, res) => {
-  const sql = "select * from clientes";
-  conexao.query(sql, (err, data) => {
-    if (err)
-      return res.status(500).json({ message: "Erro no servidor", error: err });
-    res.json(data);
-  });
+app.get("/api/clientes", async (req, res) => {
+  try {
+    const todosClientes = await clientes.find();
+    res.json(todosClientes);
+  } catch (error) {
+    console.error("Erro ao buscar clientes:", error);
+    res.status(500).json({ message: "Erro ao buscar clientes", error });
+  }
 });
 
 // rota para pegar um cliente pelo id
@@ -126,77 +141,34 @@ app.get("/api/clientes/:id", (req, res) => {
 });
 
 // rota para cadastrar um cliente
-app.post("/api/clientes", (req, res) => {
-  const { nome, cpf, email, telefone, produto_alugado } = req.body;
-
-  // Verifica campos obrigatórios
-  if (!nome || !cpf || !telefone) {
-    return res
-      .status(400)
-      .json({ message: "Nome, CPF e telefone são obrigatórios." });
-  }
-
-  // Verifica CPF (11 dígitos sem máscara ou 14 com máscara)
-  const cpfRegex = /^\d{11}$|^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
-  if (!cpfRegex.test(cpf)) {
-    return res
-      .status(400)
-      .json({ message: "CPF inválido. Use 00000000000 ou 000.000.000-00." });
-  }
-
-  // Verifica telefone (11 dígitos ou no formato (00) 00000-0000)
-  const telefoneRegex = /^\d{11}$|^\(\d{2}\) \d{5}\-\d{4}$/;
-  if (!telefoneRegex.test(telefone)) {
-    return res.status(400).json({
-      message: "Telefone inválido. Use 11999999999 ou (11) 99999-9999.",
+app.post("/api/clientes", async (req, res) => {
+  try {
+    const { nome, cpf, email, telefone, produto_alugado } = req.body;
+    const novoCliente = new clientes({
+      nome,
+      cpf,
+      email,
+      telefone,
+      produto_alugado,
     });
+    await novoCliente.save();
+    res.status(201).json(novoCliente);
+  } catch (error) {
+    console.error("Erro ao cadastrar cliente:", error);
+    res.status(500).json({ message: "Erro ao cadastrar cliente", error });
   }
-
-  // Verifica email se informado
-  if (email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({ message: "Email inválido." });
-    }
-  }
-
-  // Se tudo ok, insere no banco
-  const cliente = { nome, cpf, email, telefone, produto_alugado };
-  const sql = "INSERT INTO clientes SET ?";
-  conexao.query(sql, [cliente], (err, data) => {
-    if (err) {
-      return res
-        .status(500)
-        .json({ message: "Erro ao cadastrar cliente.", error: err });
-    }
-    res.status(201).json({ message: "Cliente cadastrado com sucesso.", data });
-  });
 });
 
 // rota para deletar um cliente
-app.delete("/api/clientes/:id", (req, res) => {
-  const sql = "DELETE FROM clientes WHERE id = ?";
-
-  conexao.query(sql, [req.params.id], (err, data) => {
-    if (err) {
-      return res.status(500).json({
-        success: false,
-        message: "Erro ao excluir cliente",
-      });
-    }
-
-    if (data.affectedRows === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "Cliente não encontrado",
-      });
-    }
-
-    res.json({
-      success: true,
-      message: "Cliente excluído com sucesso",
-    });
-  });
+app.delete("/api/clientes/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    await clientes.deleteOne({ _id: id });
+    res.status(200).json({ message: "Cliente excluído com sucesso" });
+  } catch (error) {
+    console.error("Erro ao excluir cliente:", error);
+    res.status(500).json({ message: "Erro ao excluir cliente", error });
+  }
 });
 
 // Tratamento de rota não encontrada
