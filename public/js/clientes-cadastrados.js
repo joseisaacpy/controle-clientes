@@ -9,7 +9,7 @@ async function listarClientes() {
   const data = await request.json();
 
   listaClientes = data; // guarda os clientes para filtrar depois
-  console.log(listaClientes);
+  // console.log(listaClientes);
   renderizarClientes(listaClientes);
 }
 

@@ -1,13 +1,15 @@
 // importações:
-import mongoose from "mongoose";
 import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 import path from "path";
-import clientes from "../data/clientes.js";
+import fs from "fs";
 import session from "express-session";
 import cors from "cors";
+import clientes from "./data/clientes.js";
+import ExcelJS from "exceljs";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import dotenv from "dotenv";
 dotenv.config();
 
 // conexão com o MongoDB
@@ -128,6 +130,54 @@ app.get("/api/clientes/:id", async (req, res) => {
   } catch (error) {
     console.error("Erro ao buscar cliente:", error);
     res.status(500).json({ message: "Erro ao buscar cliente", error });
+  }
+});
+
+// rota para baixar arquivo com nome dos clientes
+app.get("/clientes/baixar", async (req, res) => {
+  try {
+    // faz a busca dos clientes no banco de dados
+    const todosClientes = await clientes.find().lean();
+
+    if (!todosClientes || todosClientes.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Nenhum cliente encontrado para exportar" });
+    }
+    // Criar uma nova planilha
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Clientes");
+
+    // Definir colunas da planilha (ajuste conforme seu schema)
+    worksheet.columns = [
+      { header: "Nome", key: "nome", width: 30 },
+      { header: "CPF", key: "cpf", width: 30 },
+      { header: "Email", key: "email", width: 30 },
+      { header: "Telefone", key: "telefone", width: 20 },
+      { header: "Criação", key: "data_criacao", width: 20 },
+      { header: "Último produto alugado", key: "produto_alugado", width: 20 },
+    ];
+
+    // Adicionar os dados dos clientes
+    todosClientes.forEach((cliente) => {
+      worksheet.addRow(cliente);
+    });
+
+    // Gerar o buffer do arquivo Excel
+    const buffer = await workbook.xlsx.writeBuffer();
+
+    // Configurar o header da resposta para download
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader("Content-Disposition", "attachment; filename=clientes.xlsx");
+
+    // Enviar o arquivo diretamente para o cliente
+    res.send(buffer);
+  } catch (error) {
+    console.error("Erro ao gerar CSV de clientes:", error);
+    res.status(500).json({ message: "Erro ao gerar CSV de clientes", error });
   }
 });
 
