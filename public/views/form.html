@@ -20,7 +20,7 @@
         <h1>Cadastro de Cliente</h1>
         <form action="/clientes" method="post">
           <label for="nome">Nome:</label><br />
-          <input type="text" id="nome" name="nome" required />
+          <input type="text" id="nome" name="nome" required autofocus />
 
           <label for="cpf">CPF:</label><br />
           <input
@@ -50,8 +50,8 @@
           />
           <!-- caixa para selecionar o produto que a pessoa alugou -->
           <label for="produtos">Produto alugado:</label>
-          <select name="produtos" id="produtos">
-            <option disabled selected>Selecione um produto:</option>
+          <select name="produtos" id="produtos" required>
+            <option value="" disabled selected>Selecione um produto:</option>
             <option value="Andaime">Andaime</option>
             <option value="Furadeira">Furadeira</option>
           </select>
