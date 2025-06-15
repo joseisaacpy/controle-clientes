@@ -44,8 +44,8 @@ function renderizarClientes(clientes) {
       <p>Telefone: ${item.telefone}</p>
       <p>Criação: ${dataFormatada}</p>
       <p>Último produto alugado: ${item.produto_alugado}</p>
-      <button class="btn-editar" data-id="${item.id}">Editar</button>
-      <button class="btn-excluir" data-id="${item.id}" data-nome="${item.nome}">Excluir</button>
+      <button class="btn-editar" data-id="${item._id}">Editar</button>
+      <button class="btn-excluir" data-id="${item._id}" data-nome="${item.nome}">Excluir</button>
     `;
     li.appendChild(itemCliente);
     ul.appendChild(li);
@@ -87,6 +87,7 @@ async function excluirCliente(e) {
   const botao = e.target;
   const clienteID = botao.getAttribute("data-id");
   const clienteNome = botao.getAttribute("data-nome");
+  console.log(clienteID, clienteNome);
 
   const confirmacao = confirm(
     `Tem certeza que deseja excluir o cliente ${clienteNome}?`
@@ -104,12 +105,12 @@ async function excluirCliente(e) {
 
     const result = await response.json();
 
-    if (response.ok && result.success) {
+    if (response.ok) {
       alert(`O cliente ${clienteNome} foi excluído com sucesso!`);
       listarClientes();
     } else {
       alert("Erro ao excluir o cliente");
-      console.error("Erro ao excluir o cliente:", result.error);
+      console.error("Erro ao excluir o cliente:", result.message);
       botao.disabled = false;
       botao.textContent = "Excluir";
     }
