@@ -121,10 +121,57 @@ async function excluirCliente(e) {
   }
 }
 
-// Função placeholder para edição
-function editarCliente(event) {
+// Função para editar um cliente
+// Função para edição rápida usando prompt
+async function editarCliente(event) {
   const clienteId = event.target.getAttribute("data-id");
-  alert(`Função de editar cliente ID: ${clienteId} - A implementar!`);
+
+  try {
+    // Busca os dados atuais do cliente
+    const respostaGet = await fetch(`/api/clientes/${clienteId}`);
+    const clienteAtual = await respostaGet.json();
+
+    // Usa prompt para perguntar os novos dados (se cancelar ou deixar vazio, mantém o valor atual)
+    const novoNome =
+      prompt("Digite o novo nome do cliente:", clienteAtual.nome) ||
+      clienteAtual.nome;
+    const novoCpf =
+      prompt("Digite o novo CPF do cliente:", clienteAtual.cpf) ||
+      clienteAtual.cpf;
+    const novoEmail =
+      prompt("Digite o novo email do cliente:", clienteAtual.email) ||
+      clienteAtual.email;
+    const novoTelefone =
+      prompt("Digite o novo telefone do cliente:", clienteAtual.telefone) ||
+      clienteAtual.telefone;
+    const novoProdutoAlugado =
+      prompt(
+        "Digite o novo produto alugado do cliente:",
+        clienteAtual.produto_alugado
+      ) || clienteAtual.produto_alugado;
+
+    // Faz a requisição PUT com os novos (ou antigos) dados
+    const respostaPut = await fetch(`/api/clientes/${clienteId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nome: novoNome,
+        cpf: novoCpf,
+        email: novoEmail,
+        telefone: novoTelefone,
+        produto_alugado: novoProdutoAlugado,
+      }),
+    });
+
+    const resultado = await respostaPut.json();
+    alert(resultado.message || "Cliente atualizado com sucesso!");
+    listarClientes();
+  } catch (error) {
+    console.error("Erro ao atualizar cliente:", error);
+    alert("Erro ao atualizar cliente.");
+  }
 }
 
 // Eventos

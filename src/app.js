@@ -212,6 +212,33 @@ app.delete("/api/clientes/:id", async (req, res) => {
   }
 });
 
+// Rota para atualizar um cliente
+app.put("/api/clientes/:id", async (req, res) => {
+  const id = req.params.id; // geralmente o _id do Mongo é uma string
+  const { nome, cpf, email, telefone, produto_alugado } = req.body;
+
+  try {
+    const cliente = await clientes.findById(id);
+
+    if (!cliente) {
+      return res.status(404).json({ error: "Cliente não encontrado" });
+    }
+
+    cliente.nome = nome;
+    cliente.cpf = cpf;
+    cliente.email = email;
+    cliente.telefone = telefone;
+    cliente.produto_alugado = produto_alugado;
+
+    await cliente.save();
+
+    res.json({ success: true, message: "Cliente atualizado com sucesso" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erro no servidor" });
+  }
+});
+
 // Tratamento de rota não encontrada
 app.use((req, res) => {
   res.status(404).send("<h1>Página não encontrada</h1>");
