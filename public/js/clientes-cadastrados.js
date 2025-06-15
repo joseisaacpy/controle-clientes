@@ -87,6 +87,7 @@ async function excluirCliente(e) {
   const botao = e.target;
   const clienteID = botao.getAttribute("data-id");
   const clienteNome = botao.getAttribute("data-nome");
+  console.log(clienteID, clienteNome);
 
   const confirmacao = confirm(
     `Tem certeza que deseja excluir o cliente ${clienteNome}?`
