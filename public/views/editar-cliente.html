@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Cliente</title>
+    <link rel="stylesheet" href="../css/index.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Editar Cliente</h1>
+      <nav>
+        <a href="/">Início</a>
+        <a href="/clientes">Listar</a>
+      </nav>
+    </header>
+    <main>
+      <section>
+        <form id="formEditar">
+          <input type="hidden" id="id" />
+
+          <label for="nome">Nome:</label><br />
+          <input type="text" id="nome" name="nome" required />
+
+          <label for="cpf">CPF:</label><br />
+          <input type="text" id="cpf" name="cpf" required />
+
+          <label for="email">Email:</label><br />
+          <input type="email" id="email" name="email" />
+
+          <label for="telefone">Telefone:</label><br />
+          <input type="tel" id="telefone" name="telefone" required />
+
+          <label for="produtos">Produto alugado:</label>
+          <select name="produtos" id="produtos" required>
+            <option value="Andaime">Andaime</option>
+            <option value="Furadeira">Furadeira</option>
+          </select>
+
+          <button type="submit">Salvar Alterações</button>
+        </form>
+      </section>
+    </main>
+    <script src="../js/editar-cliente.js"></script>
+  </body>
+</html>
