@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clientes Cadastrados</title>
+    <link rel="stylesheet" href="../css/tailwind.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body class="bg-slate-50">
+    <header
+      class="flex flex-col justify-center items-center bg-slate-500 p-4 gap-2 text-center"
+    >
+      <h1 class="text-3xl font-bold">Clientes Cadastrados</h1>
+      <p class="text-lg">
+        Quantidade de Clientes:
+        <span id="qtde-clientes" class="font-bold">0</span>
+      </p>
+      <nav>
+        <ul class="flex flex-wrap justify-center gap-2">
+          <li>
+            <a
+              class="rounded shadow bg-slate-800 text-center block text-white p-1 hover:bg-slate-100 hover:text-slate-900 transition-all"
+              href="/"
+              >Início</a
+            >
+          </li>
+          <li>
+            <a
+              class="rounded shadow bg-slate-800 text-center block text-white p-1 hover:bg-slate-100 hover:text-slate-900 transition-all"
+              href="/clientes/novo"
+              >Cadastrar</a
+            >
+          </li>
+          <li>
+            <a
+              class="rounded shadow bg-slate-800 text-center block text-white p-1 hover:bg-slate-100 hover:text-slate-900 transition-all"
+              href="/clientes"
+              >Atualizar</a
+            >
+          </li>
+          <li>
+            <a
+              class="rounded shadow bg-slate-800 text-center block text-white p-1 hover:bg-slate-100 hover:text-slate-900 transition-all"
+              href="/clientes/baixar"
+              >Exportar Excel</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section>
+        <input
+          type="text"
+          id="pesquisa"
+          placeholder="Pesquisar cliente por nome..."
+          class="w-full p-2 shadow border-1"
+        />
+      </section>
+    </main>
+  </body>
+</html>

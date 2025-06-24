@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-ngrok": "concurrently \"nodemon server.js\" \"ngrok http 3000\"",
     "start": "node server.js"
   },
   "repository": {

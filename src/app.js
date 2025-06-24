@@ -3,8 +3,8 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import path from "path";
-import fs from "fs";
-import session from "express-session";
+// import fs from "fs";
+// import session from "express-session";
 import cors from "cors";
 import clientes from "./data/clientes.js";
 import ExcelJS from "exceljs";
@@ -44,62 +44,16 @@ const clientesCadastradosPath = path.join(
 const loginPath = path.join(__dirname + "/../public/views/login.html");
 // pagina de formulario de cadastro
 const formPath = path.join(__dirname + "/../public/views/form.html");
+// pagina index
+const indexPath = path.join(__dirname + "/../public/views/index.html");
 
-// configura o express-session
-app.use(
-  session({
-    secret: "nodeExpress", // pode ser qualquer string segura
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      maxAge: 1000 * 60 * 60, // 1 hora (opcional)
-    },
-  })
-);
 // para servir arquivos estáticos
 app.use(express.static(path.join(__dirname, "../public")));
 
 // rotas:
-// rota para login get
-app.get("/login", (req, res) => {
-  res.sendFile(loginPath);
-});
-
-// rota para admin
-app.get("/admin", (req, res) => {
-  if (!req.session.usuarioAutenticado) {
-    return res.redirect("/login");
-  }
-  res.sendFile(clientesCadastradosPath);
-});
-
-// rota para login post
-app.post("/login", (req, res) => {
-  const { usuario, senha } = req.body;
-  if (usuario === process.env.ADM_USER && senha === process.env.ADM_PASSWORD) {
-    req.session.usuarioAutenticado = true;
-    res.redirect("/admin");
-  } else {
-    res
-      .status(401)
-      .send(
-        "Usuário ou senha inválidos. <a href='/login'>Tentar novamente</a>"
-      );
-  }
-});
-
 // rota principal
 app.get("/", (req, res) => {
-  if (req.session.usuarioAutenticado) {
-    res.redirect("/admin");
-  } else {
-    res.redirect("/login");
-  }
-});
-
-// rota para formulário
-app.get("/clientes/novo", (req, res) => {
-  res.sendFile(formPath);
+  res.sendFile(indexPath);
 });
 
 // rota para ver clientes cadastrados
@@ -107,30 +61,9 @@ app.get("/clientes", (req, res) => {
   res.sendFile(clientesCadastradosPath);
 });
 
-// rota para listar os clientes
-app.get("/api/clientes", async (req, res) => {
-  try {
-    const todosClientes = await clientes.find();
-    res.json(todosClientes);
-  } catch (error) {
-    console.error("Erro ao buscar clientes:", error);
-    res.status(500).json({ message: "Erro ao buscar clientes", error });
-  }
-});
-
-// rota para pegar um cliente pelo id
-app.get("/api/clientes/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    const cliente = await clientes.findById(id);
-    if (!cliente) {
-      return res.status(404).json({ message: "Cliente não encontrado" });
-    }
-    res.json(cliente);
-  } catch (error) {
-    console.error("Erro ao buscar cliente:", error);
-    res.status(500).json({ message: "Erro ao buscar cliente", error });
-  }
+// rota para formulário
+app.get("/clientes/novo", (req, res) => {
+  res.sendFile(formPath);
 });
 
 // rota para baixar arquivo com nome dos clientes
@@ -178,6 +111,32 @@ app.get("/clientes/baixar", async (req, res) => {
   } catch (error) {
     console.error("Erro ao gerar CSV de clientes:", error);
     res.status(500).json({ message: "Erro ao gerar CSV de clientes", error });
+  }
+});
+
+// rota para listar os clientes
+app.get("/api/clientes", async (req, res) => {
+  try {
+    const todosClientes = await clientes.find();
+    res.json(todosClientes);
+  } catch (error) {
+    console.error("Erro ao buscar clientes:", error);
+    res.status(500).json({ message: "Erro ao buscar clientes", error });
+  }
+});
+
+// rota para pegar um cliente pelo id
+app.get("/api/clientes/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const cliente = await clientes.findById(id);
+    if (!cliente) {
+      return res.status(404).json({ message: "Cliente não encontrado" });
+    }
+    res.json(cliente);
+  } catch (error) {
+    console.error("Erro ao buscar cliente:", error);
+    res.status(500).json({ message: "Erro ao buscar cliente", error });
   }
 });
 
