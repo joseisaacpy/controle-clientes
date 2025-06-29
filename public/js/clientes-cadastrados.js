@@ -40,13 +40,15 @@ function renderizarClientes(clientes) {
     itemCliente.innerHTML = `
       <p><strong>Nome</strong>: ${item.nome}</p>
       <p><strong>CPF</strong>: ${item.cpf}</p>
-      <p><strong>Email</strong>: ${item.email}</p>
+    <p><strong>Email</strong>: ${item.email || "Sem email cadastrado"}</p>
       <p><strong>Endereço</strong>: ${item.endereco}</p>
       <p><strong>Telefone</strong>: ${item.telefone}</p>
       <p><strong>Criação</strong>: ${dataFormatada}</p>
       <p><strong>Último produto alugado</strong>: ${item.produto_alugado}</p>
       <button class="btn-editar" data-id="${item._id}">Editar</button>
-      <button class="btn-excluir" data-id="${item._id}" data-nome="${item.nome}">Excluir</button>
+      <button class="btn-excluir" data-id="${item._id}" data-nome="${
+      item.nome
+    }">Excluir</button>
     `;
     li.appendChild(itemCliente);
     ul.appendChild(li);

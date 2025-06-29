@@ -69,11 +69,11 @@ form.addEventListener("submit", async (e) => {
   }
 
   // Validação básica de email
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    mostrarErro("E-mail inválido.");
-    return;
-  }
+  // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // if (!emailRegex.test(email)) {
+  //   mostrarErro("E-mail inválido.");
+  //   return;
+  // }
 
   // Telefone é opcional, mas se preencher, validar
   if (telefone.length > 0) {
