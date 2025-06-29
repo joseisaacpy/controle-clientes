@@ -38,12 +38,13 @@ function renderizarClientes(clientes) {
     );
 
     itemCliente.innerHTML = `
-      <p>Nome: ${item.nome}</p>
-      <p>CPF: ${item.cpf}</p>
-      <p>Email: ${item.email}</p>
-      <p>Telefone: ${item.telefone}</p>
-      <p>Criação: ${dataFormatada}</p>
-      <p>Último produto alugado: ${item.produto_alugado}</p>
+      <p><strong>Nome</strong>: ${item.nome}</p>
+      <p><strong>CPF</strong>: ${item.cpf}</p>
+      <p><strong>Email</strong>: ${item.email}</p>
+      <p><strong>Endereço</strong>: ${item.endereco}</p>
+      <p><strong>Telefone</strong>: ${item.telefone}</p>
+      <p><strong>Criação</strong>: ${dataFormatada}</p>
+      <p><strong>Último produto alugado</strong>: ${item.produto_alugado}</p>
       <button class="btn-editar" data-id="${item._id}">Editar</button>
       <button class="btn-excluir" data-id="${item._id}" data-nome="${item.nome}">Excluir</button>
     `;
@@ -142,6 +143,11 @@ async function editarCliente(event) {
     const novoEmail =
       prompt("Digite o novo email do cliente:", clienteAtual.email) ||
       clienteAtual.email;
+
+    const novoEndereco =
+      prompt("Digite o novo endereço do cliente:", clienteAtual.endereco) ||
+      clienteAtual.endereco;
+
     const novoTelefone =
       prompt("Digite o novo telefone do cliente:", clienteAtual.telefone) ||
       clienteAtual.telefone;
@@ -161,6 +167,7 @@ async function editarCliente(event) {
         nome: novoNome,
         cpf: novoCpf,
         email: novoEmail,
+        endereco: novoEndereco,
         telefone: novoTelefone,
         produto_alugado: novoProdutoAlugado,
       }),

@@ -22,6 +22,7 @@
   "homepage": "https://github.com/joseisaacpy/controle-clientes#readme",
   "description": "",
   "dependencies": {
+    "concurrently": "^9.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "exceljs": "^4.4.0",
@@ -29,6 +30,7 @@
     "express-session": "^1.18.1",
     "mongodb": "^6.17.0",
     "mongoose": "^8.15.2",
+    "ngrok": "^5.0.0-beta.2",
     "path": "^0.12.7"
   }
 }

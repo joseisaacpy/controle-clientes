@@ -86,6 +86,7 @@ app.get("/clientes/baixar", async (req, res) => {
       { header: "Nome", key: "nome", width: 30 },
       { header: "CPF", key: "cpf", width: 30 },
       { header: "Email", key: "email", width: 30 },
+      { header: "Endereço", key: "endereco", width: 30 },
       { header: "Telefone", key: "telefone", width: 20 },
       { header: "Criação", key: "data_criacao", width: 20 },
       { header: "Último produto alugado", key: "produto_alugado", width: 20 },
@@ -143,11 +144,12 @@ app.get("/api/clientes/:id", async (req, res) => {
 // rota para cadastrar um cliente
 app.post("/api/clientes", async (req, res) => {
   try {
-    const { nome, cpf, email, telefone, produto_alugado } = req.body;
+    const { nome, cpf, email, endereco, telefone, produto_alugado } = req.body;
     const novoCliente = new clientes({
       nome,
       cpf,
       email,
+      endereco,
       telefone,
       produto_alugado,
     });
@@ -174,7 +176,7 @@ app.delete("/api/clientes/:id", async (req, res) => {
 // Rota para atualizar um cliente
 app.put("/api/clientes/:id", async (req, res) => {
   const id = req.params.id; // geralmente o _id do Mongo é uma string
-  const { nome, cpf, email, telefone, produto_alugado } = req.body;
+  const { nome, cpf, email, endereco, telefone, produto_alugado } = req.body;
 
   try {
     const cliente = await clientes.findById(id);
@@ -186,6 +188,7 @@ app.put("/api/clientes/:id", async (req, res) => {
     cliente.nome = nome;
     cliente.cpf = cpf;
     cliente.email = email;
+    cliente.endereco = endereco;
     cliente.telefone = telefone;
     cliente.produto_alugado = produto_alugado;
 
@@ -200,7 +203,7 @@ app.put("/api/clientes/:id", async (req, res) => {
 
 // Tratamento de rota não encontrada
 app.use((req, res) => {
-  res.status(404).send("<h1>Página não encontrada</h1>");
+  res.status(404).sendFile(path.join(__dirname, "../public/views/404.html"));
 });
 
 // exportação do app

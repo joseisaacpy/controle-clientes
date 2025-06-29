@@ -16,6 +16,10 @@ const clienteSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  endereco: {
+    type: String,
+    trim: true,
+  },
   telefone: {
     type: String,
     trim: true,

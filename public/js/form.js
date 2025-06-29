@@ -1,13 +1,23 @@
-// funcionalidade de mascara para os inputs cpf e telefone
+// Máscara dinâmica para CPF ou CNPJ
 const cpfInput = document.getElementById("cpf");
 cpfInput.addEventListener("input", function (e) {
-  let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não for número
-  if (value.length > 3 && value.length <= 6)
-    value = value.replace(/(\d{3})(\d+)/, "$1.$2");
-  else if (value.length > 6 && value.length <= 9)
-    value = value.replace(/(\d{3})(\d{3})(\d+)/, "$1.$2.$3");
-  else if (value.length > 9)
-    value = value.replace(/(\d{3})(\d{3})(\d{3})(\d+)/, "$1.$2.$3-$4");
+  let value = e.target.value.replace(/\D/g, ""); // remove tudo que não é número
+
+  if (value.length <= 11) {
+    // Aplica máscara de CPF: 000.000.000-00
+    value = value
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+  } else {
+    // Aplica máscara de CNPJ: 00.000.000/0000-00
+    value = value
+      .replace(/^(\d{2})(\d)/, "$1.$2")
+      .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+      .replace(/\.(\d{3})(\d)/, ".$1/$2")
+      .replace(/(\d{4})(\d{1,2})$/, "$1-$2");
+  }
+
   e.target.value = value;
 });
 
@@ -32,6 +42,7 @@ form.addEventListener("submit", async (e) => {
   const nome = e.target.nome.value.trim();
   const cpf = e.target.cpf.value.trim();
   const email = e.target.email.value.trim();
+  const endereco = e.target.endereco.value.trim();
   const telefone = e.target.telefone.value.trim();
   const produto_alugado = e.target.produtos.value.trim();
 
@@ -46,10 +57,14 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  // Validação simples de CPF (apenas para checar formato)
-  const cpfRegex = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
-  if (!cpfRegex.test(cpf)) {
-    mostrarErro("CPF inválido. Use o formato XXX.XXX.XXX-XX");
+  // Validação simples de CPF ou CNPJ
+  const cpfCnpjRegex =
+    /^(\d{3}\.\d{3}\.\d{3}\-\d{2}|\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2})$/;
+
+  if (!cpfCnpjRegex.test(cpf)) {
+    mostrarErro(
+      "CPF ou CNPJ inválido. Use os formatos: XXX.XXX.XXX-XX ou XX.XXX.XXX/0001-XX"
+    );
     return;
   }
 
@@ -76,7 +91,14 @@ form.addEventListener("submit", async (e) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ nome, cpf, email, telefone, produto_alugado }),
+      body: JSON.stringify({
+        nome,
+        cpf,
+        email,
+        endereco,
+        telefone,
+        produto_alugado,
+      }),
     });
 
     if (response.ok) {
