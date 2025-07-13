@@ -50,7 +50,15 @@ const indexPath = path.join(__dirname + "/../public/views/index.html");
 // para servir arquivos estáticos
 app.use(express.static(path.join(__dirname, "../public")));
 
-// rotas:
+// Rotas:
+
+// Rota para o serviço fechado (liberar após pagamento)
+app.use((req, res) => {
+  res
+    .status(404)
+    .sendFile(path.join(__dirname, "../public/views/servico-fechado.html"));
+});
+
 // rota principal
 app.get("/", (req, res) => {
   res.sendFile(indexPath);
